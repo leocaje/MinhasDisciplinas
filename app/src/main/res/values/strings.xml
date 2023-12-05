@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Minhas Disciplinas</string>
+
+    <string name="home_btnAccess">Acessar</string>
+    <string name="list_btnAddDiscipline">Adicionar Disciplina</string>
+    <string name="details_btnEditDiscipline">Editar</string>
+    <string name="details_btnDeleteDiscipline">Deletar</string>
+    <string name="new_btnSaveDiscipline">Salvar Disciplina</string>
+    <string name="edit_btnUpdateDiscipline">Atualizar Disciplina</string>
+
+    <string name="details_lblDisciplineInfo">Dados da Disciplina</string>
+    <string name="new_lblDisciplineInfo">Cadastrar Disciplina</string>
+    <string name="edit_lblDisciplineInfo">Editar Disciplina</string>
+
+    <array name="spinner_discipline_type">
+        <item>Tipo da Disciplina</item>
+        <item>Obrigatória</item>
+        <item>Optativa Eletiva</item>
+        <item>Optativa Livre</item>
+        <item>Extra Curricular</item>
+        <item>Curso de Extensão</item>
+    </array>
+
+    <array name="spinner_discipline_status">
+        <item>Andamento da Disciplina</item>
+        <item>A cursar</item>
+        <item>Cursando</item>
+        <item>Concluída</item>
+    </array>
+</resources>
