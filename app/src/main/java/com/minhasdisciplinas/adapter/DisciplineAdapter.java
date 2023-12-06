@@ -49,21 +49,21 @@ public class DisciplineAdapter extends RecyclerView.Adapter<DisciplineAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         //Recupera as views do arquivo discipline_item_layout
-
         TextView cardDisciplineName;
+
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
-            cardDisciplineName.findViewById(R.id.cardDisciplineName);
+            cardDisciplineName = itemView.findViewById(R.id.cardDisciplineName);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (recyclerViewInterface != null) {
-                        int pos = getAdapterPosition();
+                        int position = getAdapterPosition();
 
-                        if (pos != RecyclerView.NO_POSITION) {
-                            recyclerViewInterface.onItemClick(pos);
+                        if (position != RecyclerView.NO_POSITION) {
+                            recyclerViewInterface.onItemClick(position);
                         }
                     }
                 }

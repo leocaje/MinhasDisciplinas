@@ -46,6 +46,10 @@ public class DisciplineDTO {
         this.grade = grade;
     }
 
+    public DisciplineDTO(String disciplineName) {
+        this.disciplineName = disciplineName;
+    }
+
     public String getId() {
         return this.id;
     }

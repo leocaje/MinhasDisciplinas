@@ -15,7 +15,7 @@ public class DisciplineItemView extends RecyclerView.ViewHolder {
     public DisciplineItemView(View itemView) {
         super(itemView);
 
-        txtCardDisciplineName.findViewById(R.id.cardDisciplineName);
-        disciplineCard.findViewById(R.id.disciplineCard);
+        txtCardDisciplineName = itemView.findViewById(R.id.cardDisciplineName);
+        disciplineCard = itemView.findViewById(R.id.disciplineCard);
     }
 }

@@ -2,6 +2,7 @@ package com.minhasdisciplinas.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class DisciplinesListActivity extends AppCompatActivity implements RecyclerViewInterface {
     List<DisciplineDTO> disciplines = new ArrayList<>();
+    DisciplineDTO discipline = new DisciplineDTO();
     Button btnAddDiscipline;
 
     void buildStyles() {
@@ -33,6 +35,8 @@ public class DisciplinesListActivity extends AppCompatActivity implements Recycl
         buildStyles();
         setContentView(R.layout.disciplines_list_layout);
 
+        disciplines = getDisciplineCard(discipline);
+
         RecyclerView recyclerView = findViewById(R.id.recyclerDiscipline);
 
         DisciplineAdapter adapter = new DisciplineAdapter(this, disciplines, this);
@@ -45,6 +49,17 @@ public class DisciplinesListActivity extends AppCompatActivity implements Recycl
             Intent openNewDisciplineActivity = new Intent(getApplicationContext(), NewDisciplineActivity.class);
             startActivity(openNewDisciplineActivity);
         });
+    }
+
+    private List<DisciplineDTO> getDisciplineCard(DisciplineDTO discipline) {
+        List<DisciplineDTO> disciplineCards = new ArrayList<>();
+
+
+        disciplineCards.add(discipline);
+
+
+
+        return disciplines;
     }
 
     @Override

@@ -77,6 +77,7 @@ public class NewDisciplineActivity extends AppCompatActivity implements AdapterV
         txtDisciplineName = findViewById(R.id.txtDisciplineName);
         txtProfessor = findViewById(R.id.txtProfessor);
         txtPeriod = findViewById(R.id.txtPeriod);
+        txtWorkloadHours = findViewById(R.id.txtWorkloadHours);
         spinnerType = findViewById(R.id.spinnerDisciplineType);
         spinnerStatus = findViewById(R.id.spinnerDisciplineStatus);
         txtDescription = findViewById(R.id.txtDescription);

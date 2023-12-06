@@ -78,6 +78,7 @@ public class DisciplineDetailsActivity extends AppCompatActivity implements Adap
         infoDisciplineName = findViewById(R.id.infoDisciplineName);
         infoProfessor = findViewById(R.id.infoProfessor);
         infoPeriod = findViewById(R.id.infoPeriod);
+        infoWorkloadHours = findViewById(R.id.infoWorkloadHours);
         spinnerType = findViewById(R.id.spinnerInfoDisciplineType);
         spinnerStatus = findViewById(R.id.spinnerInfoDisciplineStatus);
         infoDescription = findViewById(R.id.infoDescription);
