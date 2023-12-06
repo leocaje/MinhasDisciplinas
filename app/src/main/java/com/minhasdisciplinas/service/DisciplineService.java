@@ -11,6 +11,7 @@ import com.minhasdisciplinas.model.DisciplineDTO;
 import com.minhasdisciplinas.util.GlobalConstants;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -25,13 +26,16 @@ import okhttp3.Response;
 
 public class DisciplineService {
     public static final MediaType JSON = MediaType.get("application/json");
+    String id = "1";
     String url = GlobalConstants.BASE_URL + "/disciplinas.json";
     String urlId = GlobalConstants.BASE_URL + "/disciplinas/" + id + ".json";
     OkHttpClient client = new OkHttpClient();
     ExecutorService executor = Executors.newSingleThreadExecutor();
     Gson gson = new Gson();
 
-    public void createDiscipline(DisciplineDTO discipline) {
+    List<DisciplineDTO> disciplines = new ArrayList<>();
+
+    public void createDiscipline(DisciplineDTO discipline, OnCreateDisciplineListener listener) {
         Future<?> createNewDiscipline = executor.submit(() -> {
             String disciplineToAdd = gson.toJson(discipline);
             RequestBody body = RequestBody.create(disciplineToAdd, JSON);
@@ -55,6 +59,7 @@ public class DisciplineService {
                 }
             } catch (IOException exception) {
                 exception.printStackTrace();
+                listener.onDisciplineCreated(false);
             }
         });
     }
@@ -117,7 +122,7 @@ public class DisciplineService {
         }
     }
 
-    public void updateDisciplineById() {
+    public void updateDisciplineById(DisciplineDTO id) {
         Future<?> updateDisciplineInfo = executor.submit(() -> {
             String updatedDiscipline = gson.toJson(id);
             RequestBody body = RequestBody.create(updatedDiscipline, JSON);
@@ -161,83 +166,54 @@ public class DisciplineService {
         });
     }
 
+    public void loadDisciplines(OnLoadedDisciplineListener listener) {
+        executor.execute(() -> {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                String resp = response.body().string();
+
+                if (resp != null && resp.isEmpty()) {
+                    JsonParser parser = new JsonParser();
+                    JsonElement element = parser.parse(resp);
+
+                    if (element != null && !element.isJsonNull() && element.isJsonObject()) {
+                        JsonObject convertedObject = element.getAsJsonObject();
+
+                        for (String key : convertedObject.keySet()) {
+                            JsonElement obj = convertedObject.get(key);
+
+                            if (obj != null && !obj.isJsonNull() && obj.isJsonObject()) {
+                                DisciplineDTO discipline = gson.fromJson(obj, DisciplineDTO.class);
+                                disciplines.add(discipline);
+                            }
+                        }
+                        Log.i("SERVICE", "Resposta: " + resp);
+                    } else {
+                        Log.e("SERVICE", "Resposta do servidor não é um objeto Json válido");
+                    }
+                } else {
+                    Log.e("SERVICE", "Resposta do servidor nula ou vazia");
+                }
+            } catch (IOException exception) {
+                throw new RuntimeException(exception);
+            }
+        });
+    }
+
     public void shutdownExecutor() {
         executor.shutdown();
     }
+
+    public interface OnCreateDisciplineListener {
+        void onDisciplineCreated(boolean success);
+    }
+
+    public interface OnLoadedDisciplineListener {
+        void onDisciplineLoaded(List<DisciplineDTO> disciplines);
+    }
+
 }
-
-/*
-import com.google.firebase.database.*;
-
-public class DisciplineService {
-    DatabaseReference databaseReference;
-
-    public DisciplineService() {
-        // Obtenha uma referência ao seu nó "disciplinas" no Realtime Database
-        databaseReference = FirebaseDatabase.getInstance().getReference("disciplinas");
-    }
-
-    public void createDiscipline(DisciplineDTO discipline) {
-        // Crie um novo nó para a disciplina
-        String key = databaseReference.push().getKey();
-        databaseReference.child(key).setValue(discipline);
-    }
-
-    public void getDisciplineList(final List<DisciplineDTO> disciplines) {
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                disciplines.clear();
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    DisciplineDTO discipline = snapshot.getValue(DisciplineDTO.class);
-                    if (discipline != null) {
-                        disciplines.add(discipline);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Trate erros de leitura do banco de dados aqui
-            }
-        });
-    }
-
-    public void getDisciplineById(String id, final OnDisciplineLoadedListener listener) {
-        databaseReference.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                DisciplineDTO discipline = dataSnapshot.getValue(DisciplineDTO.class);
-                if (discipline != null) {
-                    listener.onDisciplineLoaded(discipline);
-                } else {
-                    listener.onDisciplineLoadFailure("Disciplina não encontrada");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Trate erros de leitura do banco de dados aqui
-                listener.onDisciplineLoadFailure("Erro ao carregar disciplina: " + databaseError.getMessage());
-            }
-        });
-    }
-
-    public void updateDisciplineById(String id, DisciplineDTO updatedDiscipline) {
-        databaseReference.child(id).setValue(updatedDiscipline);
-    }
-
-    public void deleteDisciplineById(String id) {
-        databaseReference.child(id).removeValue();
-    }
-}
-
-// Interface para manipular resultados assíncronos
-interface OnDisciplineLoadedListener {
-    void onDisciplineLoaded(DisciplineDTO discipline);
-
-    void onDisciplineLoadFailure(String errorMessage);
-}
-
- */

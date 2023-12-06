@@ -16,11 +16,9 @@ import com.minhasdisciplinas.util.RecyclerViewInterface;
 import java.util.List;
 
 public class DisciplineAdapter extends RecyclerView.Adapter<DisciplineAdapter.MyViewHolder> {
+    private final RecyclerViewInterface recyclerViewInterface;
     Context context;
     List<DisciplineDTO> disciplines;
-
-    private final RecyclerViewInterface recyclerViewInterface;
-
 
     public DisciplineAdapter(Context context, List<DisciplineDTO> disciplines, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;

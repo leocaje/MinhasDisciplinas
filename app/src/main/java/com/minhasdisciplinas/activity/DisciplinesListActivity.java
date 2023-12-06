@@ -42,7 +42,7 @@ public class DisciplinesListActivity extends AppCompatActivity implements Recycl
 
         btnAddDiscipline = findViewById(R.id.btnAddDiscipline);
         btnAddDiscipline.setOnClickListener(event -> {
-            Intent openNewDisciplineActivity = new Intent(this, NewDisciplineActivity.class);
+            Intent openNewDisciplineActivity = new Intent(getApplicationContext(), NewDisciplineActivity.class);
             startActivity(openNewDisciplineActivity);
         });
     }
